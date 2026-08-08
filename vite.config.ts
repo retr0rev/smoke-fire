@@ -9,4 +9,14 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id: string) {
+          if (id.includes('node_modules/three') || id.includes('@react-three')) return 'three'
+          if (id.includes('@supabase')) return 'supabase'
+        },
+      },
+    },
+  },
 })

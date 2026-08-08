@@ -1,32 +1,61 @@
-# React + TypeScript + Vite
+# Smoke & Fire — Digital Menu & Admin Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Production-quality restaurant digital menu system with customer-facing menu and admin dashboard.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+React 18, Vite, TanStack Router, Tailwind CSS, Three.js (R3F), TanStack Query, Supabase, Vercel
 
-## React Compiler
+## Setup
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-## Expanding the Oxlint configuration
+2. **Set up Supabase**
+   - Create a project at [supabase.com](https://supabase.com)
+   - In the SQL Editor, run `db/migrations/001_initial.sql` to create the schema
+   - In the SQL Editor, run `db/seed.sql` to populate demo data
+   - In Authentication settings, enable Email/Password provider
+   - Create an admin user through Authentication > Users > Add User
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+3. **Configure environment**
+   ```bash
+   cp .env.example .env
+   ```
+   Fill in your Supabase URL, anon key, and service role key.
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+4. **Run development server**
+   ```bash
+   npm run dev
+   ```
+
+5. **Access the admin dashboard**
+   - Go to `/admin/login`
+   - Sign in with your Supabase admin credentials
+
+## Deploy to Vercel
+
+1. Push to Vercel (or use Vercel CLI)
+2. Set all environment variables (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`)
+3. Deploy
+
+## Project Structure
+
+```
+src/          — React frontend (components, features, hooks, i18n, layouts, routes, lib)
+api/          — Vercel serverless functions (REST API)
+db/           — Database migrations and seed data
+public/       — Static assets
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Features
+
+- Customer-facing digital menu with Arabic + English localization
+- Full RTL/LTR support
+- Mobile-first responsive design
+- Three.js atmospheric ember particle background
+- Complete admin dashboard for content management
+- Supabase PostgreSQL + Storage backend
+- Vercel serverless deployment

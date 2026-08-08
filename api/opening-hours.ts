@@ -1,0 +1,16 @@
+import type { VercelRequest, VercelResponse } from '@vercel/node'
+import { cors } from './_lib/cors'
+import { createServerSupabase } from './_lib/supabase'
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (cors(req, res)) return
+
+  const supabase = createServerSupabase()
+  const { data, error } = await supabase
+    .from('opening_hours')
+    .select('*')
+    .order('day_of_week')
+
+  if (error) return res.status(500).json({ message: error.message })
+  return res.status(200).json(data)
+}
