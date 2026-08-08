@@ -1,63 +1,48 @@
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
+import { useState } from 'react'
 import { Input } from '../../components/Input'
 import { Button } from '../../components/Button'
 import type { Category } from '../../lib/api'
 
-const categorySchema = z.object({
-  name_en: z.string().min(1, 'Required'),
-  name_ar: z.string().min(1, 'مطلوب'),
-  description_en: z.string().optional(),
-  description_ar: z.string().optional(),
-  slug: z.string().min(1, 'Required').regex(/^[a-z0-9-]+$/, 'Lowercase letters, numbers, hyphens only'),
-  sort_order: z.coerce.number().int().min(0),
-  is_active: z.boolean(),
-})
-
-type CategoryFormData = z.infer<typeof categorySchema>
-
 interface CategoryFormProps {
   initial?: Partial<Category>
-  onSubmit: (data: CategoryFormData) => Promise<void>
+  onSubmit: (data: any) => Promise<void>
   onCancel: () => void
 }
 
 export function CategoryForm({ initial, onSubmit, onCancel }: CategoryFormProps) {
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<CategoryFormData>({
-    resolver: zodResolver(categorySchema),
-    defaultValues: {
-      name_en: initial?.name_en || '',
-      name_ar: initial?.name_ar || '',
-      description_en: initial?.description_en || '',
-      description_ar: initial?.description_ar || '',
-      slug: initial?.slug || '',
-      sort_order: initial?.sort_order || 0,
-      is_active: initial?.is_active ?? true,
-    },
-  })
+  const [nameEn, setNameEn] = useState(initial?.name_en || '')
+  const [nameAr, setNameAr] = useState(initial?.name_ar || '')
+  const [descEn] = useState(initial?.description_en || '')
+  const [descAr] = useState(initial?.description_ar || '')
+  const [slug, setSlug] = useState(initial?.slug || '')
+  const [sortOrder, setSortOrder] = useState(initial?.sort_order ?? 0)
+  const [isActive, setIsActive] = useState(initial?.is_active ?? true)
+  const [loading, setLoading] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!nameEn || !nameAr || !slug) return
+    setLoading(true)
+    try {
+      await onSubmit({ name_en: nameEn, name_ar: nameAr, description_en: descEn, description_ar: descAr, slug, sort_order: Number(sortOrder), is_active: isActive })
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Input label="Name (English)" {...register('name_en')} error={errors.name_en?.message} />
-        <Input label="الاسم (العربية)" {...register('name_ar')} error={errors.name_ar?.message} dir="rtl" />
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Input label="Description (English)" {...register('description_en')} />
-        <Input label="الوصف (العربية)" {...register('description_ar')} dir="rtl" />
-      </div>
-      <Input label="Slug" {...register('slug')} error={errors.slug?.message} placeholder="burgers" />
-      <Input label="Sort Order" type="number" {...register('sort_order')} error={errors.sort_order?.message} />
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <Input label="Name (English)" value={nameEn} onChange={e => setNameEn(e.target.value)} required />
+      <Input label="الاسم (العربية)" value={nameAr} onChange={e => setNameAr(e.target.value)} required dir="rtl" />
+      <Input label="Slug" value={slug} onChange={e => setSlug(e.target.value)} required placeholder="burgers" />
+      <Input label="Sort Order" type="number" value={sortOrder} onChange={e => setSortOrder(Number(e.target.value))} />
       <label className="flex items-center gap-2">
-        <input type="checkbox" {...register('is_active')} className="rounded" />
+        <input type="checkbox" checked={isActive} onChange={e => setIsActive(e.target.checked)} className="rounded" />
         <span className="text-sm text-text-secondary">Active</span>
       </label>
-      <div className="flex gap-3 justify-end">
-        <Button variant="ghost" onClick={onCancel} type="button">Cancel</Button>
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Saving...' : 'Save'}
-        </Button>
+      <div className="flex gap-2 justify-end pt-2">
+        <Button variant="ghost" type="button" onClick={onCancel}>Cancel</Button>
+        <Button type="submit" disabled={loading}>{loading ? 'Saving...' : 'Save'}</Button>
       </div>
     </form>
   )
