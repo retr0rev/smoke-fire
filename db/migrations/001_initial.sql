@@ -15,7 +15,7 @@ create table restaurants (
   google_maps_url text,
   latitude float,
   longitude float,
-  currency text not null default 'SAR',
+  currency text not null default 'S.P',
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );

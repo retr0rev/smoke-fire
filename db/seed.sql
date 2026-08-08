@@ -5,13 +5,13 @@ values (
   '/logo.png',
   'Premium burgers and BBQ crafted with fire and smoke. Every bite is a bold experience.',
   'برجر وباربكيو فاخر مصنوع بالنار والدخان. كل قضمة تجربة جريئة.',
-  '+966 50 000 0000',
-  '+966 50 000 0000',
-  'info@smokeandfire.sa',
-  'King Fahd Road, Riyadh',
-  'طريق الملك فهد، الرياض',
-  'https://maps.google.com/?q=Smoke+and+Fire+Riyadh',
-  'SAR'
+  null,
+  null,
+  null,
+  'Idlib, Syria',
+  'إدلب، سوريا',
+  null,
+  'S.P'
 );
 
 insert into categories (restaurant_id, name_en, name_ar, slug, sort_order) values
@@ -72,11 +72,7 @@ begin
     (v_meals, v_rid, 'Chicken Fire Combo', 'كومبو الدجاج الحار', 'Buffalo Fire Wrap + Fries + Drink', 'وافل بافلو فاير + بطاطس + مشروب', 52, false, 2);
 end $$;
 
-insert into restaurant_socials (restaurant_id, platform, url, is_enabled, sort_order) values
-  ('00000000-0000-0000-0000-000000000001', 'instagram', 'https://instagram.com/smokeandfire', true, 1),
-  ('00000000-0000-0000-0000-000000000001', 'whatsapp', 'https://wa.me/966500000000', true, 2),
-  ('00000000-0000-0000-0000-000000000001', 'tiktok', 'https://tiktok.com/@smokeandfire', true, 3),
-  ('00000000-0000-0000-0000-000000000001', 'phone', 'tel:+966500000000', true, 4);
+-- Socials: leave empty — admin adds them from the dashboard
 
 insert into opening_hours (restaurant_id, day_of_week, open_time, close_time, is_closed) values
   ('00000000-0000-0000-0000-000000000001', 0, '13:00', '01:00', false),

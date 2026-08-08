@@ -16,8 +16,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
   if (req.method === 'PUT') {
     const socials = req.body as any[]
+    const { data: restaurant } = await supabase.from('restaurants').select('id').limit(1).single()
     for (const s of socials) {
-      await supabase.from('restaurant_socials').upsert(s, { onConflict: 'id' })
+      if (s.id) {
+        await supabase.from('restaurant_socials').upsert({ ...s, restaurant_id: restaurant.id }, { onConflict: 'id' })
+      } else {
+        await supabase.from('restaurant_socials').insert({ ...s, restaurant_id: restaurant.id })
+      }
     }
     return res.status(200).json({ success: true })
   }

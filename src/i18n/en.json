@@ -10,7 +10,7 @@
   "lang.switch": "العربية",
   "menu.all": "All",
   "menu.noItems": "No items in this category",
-  "item.price": "SAR {price}",
+  "item.price": "S.P {price}",
   "item.ingredients": "Ingredients",
   "item.allergens": "Allergens",
   "item.calories": "{cal} cal",
