@@ -10,10 +10,9 @@ import { showToast } from '../../components/Toast'
 import { CategoryForm } from '../../features/admin/CategoryForm'
 import { useLang } from '../../i18n/context'
 import { SEOHead } from '../../components/SEOHead'
+import { Plus } from 'lucide-react'
 
-export const Route = createFileRoute('/admin/categories')({
-  component: CategoriesPage,
-})
+export const Route = createFileRoute('/admin/categories')({ component: CategoriesPage })
 
 function CategoriesPage() {
   const { t } = useLang()
@@ -47,10 +46,10 @@ function CategoriesPage() {
 
   const columns = [
     { key: 'name', header: 'Name', render: (c: Category) => <span>{c.name_en} / {c.name_ar}</span> },
-    { key: 'slug', header: 'Slug', render: (c: Category) => <span className="text-text-secondary">{c.slug}</span> },
+    { key: 'slug', header: 'Slug', render: (c: Category) => <span className="text-text-secondary text-xs">{c.slug}</span> },
     { key: 'status', header: 'Status', render: (c: Category) => <span className={c.is_active ? 'text-success' : 'text-text-disabled'}>{c.is_active ? 'Active' : 'Inactive'}</span> },
     { key: 'actions', header: '', render: (c: Category) => (
-      <div className="flex gap-2">
+      <div className="flex gap-1">
         <Button size="sm" variant="ghost" onClick={() => setEditCategory(c)}>{t('common.edit')}</Button>
         <Button size="sm" variant="ghost" className="!text-error" onClick={() => setDeleteId(c.id)}>{t('common.delete')}</Button>
       </div>
@@ -62,15 +61,18 @@ function CategoriesPage() {
       <SEOHead title="Categories" description="Manage Categories" />
       <div>
         <div className="flex items-center justify-between mb-6">
-          <h1 className="font-heading text-2xl tracking-wide">{t('admin.categories')}</h1>
-          <Button size="sm" onClick={() => setShowCreate(true)}>{t('common.create')}</Button>
+          <div>
+            <h1 className="text-xl font-semibold">{t('admin.categories')}</h1>
+            <p className="text-sm text-text-secondary mt-0.5">{categories?.length || 0} categories</p>
+          </div>
+          <Button size="sm" onClick={() => setShowCreate(true)}><Plus size={16} className="mr-1" /> {t('common.create')}</Button>
         </div>
         <Table columns={columns} data={categories || []} keyExtractor={(c) => c.id} emptyMessage="No categories yet" />
         <Modal open={showCreate} onClose={() => setShowCreate(false)} title="Create Category">
-          <CategoryForm onSubmit={async (data) => createMutation.mutateAsync(data)} onCancel={() => setShowCreate(false)} />
+          <CategoryForm onSubmit={async (d) => createMutation.mutateAsync(d)} onCancel={() => setShowCreate(false)} />
         </Modal>
         <Modal open={!!editCategory} onClose={() => setEditCategory(null)} title="Edit Category">
-          {editCategory && <CategoryForm initial={editCategory} onSubmit={async (data) => updateMutation.mutateAsync({ id: editCategory.id, data })} onCancel={() => setEditCategory(null)} />}
+          {editCategory && <CategoryForm initial={editCategory} onSubmit={async (d) => updateMutation.mutateAsync({ id: editCategory.id, data: d })} onCancel={() => setEditCategory(null)} />}
         </Modal>
         <ConfirmDialog open={!!deleteId} onClose={() => setDeleteId(null)} onConfirm={() => deleteId && deleteMutation.mutate(deleteId)} title="Delete Category" message="This will also delete all items in this category." confirmLabel="Delete" destructive />
       </div>
