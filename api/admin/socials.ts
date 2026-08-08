@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { cors } from '../_lib/cors'
-import { createServerSupabase } from '../_lib/supabase'
-import { verifyAuth } from '../_lib/auth'
+import { cors } from '../_lib/cors.js'
+import { createServerSupabase } from '../_lib/supabase.js'
+import { verifyAuth } from '../_lib/auth.js'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (cors(req, res)) return
@@ -17,6 +17,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'PUT') {
     const socials = req.body as any[]
     const { data: restaurant } = await supabase.from('restaurants').select('id').limit(1).single()
+    if (!restaurant) return res.status(404).json({ message: 'No restaurant found' })
     for (const s of socials) {
       if (s.id) {
         await supabase.from('restaurant_socials').upsert({ ...s, restaurant_id: restaurant.id }, { onConflict: 'id' })

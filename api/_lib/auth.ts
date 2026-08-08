@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { createServerSupabase } from './supabase'
+import { createServerSupabase } from './supabase.js'
 
 export async function verifyAuth(req: VercelRequest, res: VercelResponse): Promise<boolean> {
   const authHeader = req.headers.authorization
