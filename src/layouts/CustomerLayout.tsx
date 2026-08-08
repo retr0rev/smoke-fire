@@ -28,11 +28,6 @@ export function CustomerLayout() {
           </nav>
           <div className="flex items-center gap-3">
             <LangSwitcher />
-            <button className="sm:hidden flex flex-col gap-1 p-2" aria-label="Menu">
-              <span className="w-5 h-0.5 bg-text-secondary" />
-              <span className="w-5 h-0.5 bg-text-secondary" />
-              <span className="w-5 h-0.5 bg-text-secondary" />
-            </button>
           </div>
         </div>
       </header>
