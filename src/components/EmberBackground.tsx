@@ -1,4 +1,3 @@
-import { Suspense, lazy } from 'react'
 import { useEffect, useRef, useState, useMemo } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
@@ -43,6 +42,7 @@ function EmberParticles() {
     <points ref={meshRef}>
       <bufferGeometry>
         <bufferAttribute
+          args={[positions, 3]}
           attach="attributes-position"
           count={PARTICLE_COUNT}
           array={positions}

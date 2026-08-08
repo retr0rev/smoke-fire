@@ -22,7 +22,7 @@ interface MenuItemCardProps {
   onClick?: () => void
 }
 
-export function MenuItemCard({ item, currency = 'SAR', onClick }: MenuItemCardProps) {
+export function MenuItemCard({ item, onClick }: MenuItemCardProps) {
   const { lang, t } = useLang()
   const name = lang === 'ar' ? item.name_ar : item.name_en
   const description = lang === 'ar' ? item.description_ar : item.description_en

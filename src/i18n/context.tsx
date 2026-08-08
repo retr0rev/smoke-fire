@@ -47,7 +47,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     return value
   }, [lang])
 
-  const value = useMemo(() => ({ lang, setLang, dir, t }), [lang, setLang, dir, t])
+  const value = useMemo(() => ({ lang, setLang, dir: dir as 'ltr' | 'rtl', t }), [lang, setLang, dir, t])
 
   return (
     <LanguageContext value={value}>

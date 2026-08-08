@@ -1,7 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api, type MediaItem } from '../../lib/api'
-import { Button } from '../../components/Button'
 import { ImageUpload } from '../../components/ImageUpload'
 import { showToast } from '../../components/Toast'
 import { useLang } from '../../i18n/context'

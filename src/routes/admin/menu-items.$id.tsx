@@ -20,7 +20,7 @@ function EditMenuItemPage() {
   })
 
   const mutation = useMutation({
-    mutationFn: (data: any) => api.admin.menuItems.update(id, data),
+    mutationFn: (data: any) => api.admin.menuItems.update(id, data).then(() => {}),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['admin', 'menuItems'] }); showToast('Item updated'); router.navigate({ to: '/admin/menu-items' }) },
     onError: (err: Error) => showToast(err.message, 'error'),
   })

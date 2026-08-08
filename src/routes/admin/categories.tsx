@@ -28,13 +28,13 @@ function CategoriesPage() {
   })
 
   const createMutation = useMutation({
-    mutationFn: (data: any) => api.admin.categories.create(data),
+    mutationFn: (data: any) => api.admin.categories.create(data).then(() => {}),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['admin', 'categories'] }); setShowCreate(false); showToast('Category created') },
     onError: (err: Error) => showToast(err.message, 'error'),
   })
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) => api.admin.categories.update(id, data),
+    mutationFn: ({ id, data }: { id: string; data: any }) => api.admin.categories.update(id, data).then(() => {}),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['admin', 'categories'] }); setEditCategory(null); showToast('Category updated') },
     onError: (err: Error) => showToast(err.message, 'error'),
   })

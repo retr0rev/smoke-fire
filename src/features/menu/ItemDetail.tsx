@@ -10,7 +10,7 @@ interface ItemDetailProps {
   currency?: string
 }
 
-export function ItemDetail({ item, open, onClose, currency = 'SAR' }: ItemDetailProps) {
+export function ItemDetail({ item, open, onClose }: ItemDetailProps) {
   const { lang, t } = useLang()
 
   if (!item) return null

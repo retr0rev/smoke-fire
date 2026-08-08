@@ -14,7 +14,7 @@ function CreateMenuItemPage() {
   const queryClient = useQueryClient()
 
   const mutation = useMutation({
-    mutationFn: (data: any) => api.admin.menuItems.create(data),
+    mutationFn: (data: any) => api.admin.menuItems.create(data).then(() => {}),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['admin', 'menuItems'] }); showToast('Item created'); router.navigate({ to: '/admin/menu-items' }) },
     onError: (err: Error) => showToast(err.message, 'error'),
   })
