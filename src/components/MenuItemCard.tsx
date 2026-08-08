@@ -14,6 +14,8 @@ interface MenuItem {
   is_popular: boolean
   is_new: boolean
   is_spicy: boolean
+  ingredients_en?: string[] | null
+  ingredients_ar?: string[] | null
 }
 
 interface MenuItemCardProps {
@@ -26,6 +28,7 @@ export function MenuItemCard({ item, onClick }: MenuItemCardProps) {
   const { lang, t } = useLang()
   const name = lang === 'ar' ? item.name_ar : item.name_en
   const description = lang === 'ar' ? item.description_ar : item.description_en
+  const ingredients = lang === 'ar' ? item.ingredients_ar : item.ingredients_en
 
   return (
     <Card
@@ -39,7 +42,7 @@ export function MenuItemCard({ item, onClick }: MenuItemCardProps) {
             src={item.image_url}
             alt={name}
             loading="lazy"
-            className="w-full aspect-[16/10] object-cover transition-transform group-hover:scale-105"
+            className="w-full aspect-square object-cover transition-transform group-hover:scale-105"
           />
           {!item.is_available && (
             <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
@@ -49,15 +52,18 @@ export function MenuItemCard({ item, onClick }: MenuItemCardProps) {
         </div>
       )}
       <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
-          <h3 className="font-heading text-lg tracking-wide text-text-primary truncate">{name}</h3>
-          <p className="text-sm text-text-secondary mt-1 line-clamp-2">{description}</p>
-        </div>
-        <span className="shrink-0 font-medium text-orange whitespace-nowrap">
+        <h3 className="font-heading text-lg tracking-wide text-text-primary truncate">{name}</h3>
+        <span className="shrink-0 font-bold text-orange text-lg whitespace-nowrap">
           {t('item.price', { price: item.price })}
         </span>
       </div>
-      <div className="flex flex-wrap gap-1.5 mt-3">
+      {description && (
+        <p className="text-xs text-text-secondary mt-1 line-clamp-2">{description}</p>
+      )}
+      {ingredients && ingredients.length > 0 && (
+        <p className="text-xs text-text-disabled mt-1 line-clamp-1">{ingredients.join(', ')}</p>
+      )}
+      <div className="flex flex-wrap gap-1 mt-2">
         {item.is_popular && <Badge variant="popular">{t('badge.popular')}</Badge>}
         {item.is_new && <Badge variant="new">{t('badge.new')}</Badge>}
         {item.is_spicy && <Badge variant="spicy">{t('badge.spicy')}</Badge>}

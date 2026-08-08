@@ -8,12 +8,14 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!isLoading && !user) {
-      router.navigate({ to: '/admin/login' })
+      if (window.location.pathname !== '/admin/login') {
+        router.navigate({ to: '/admin/login' })
+      }
     }
   }, [user, isLoading, router])
 
   if (isLoading) return <div className="flex items-center justify-center min-h-dvh text-text-secondary">Loading...</div>
-  if (!user) return null
+  if (!user) return <>{children}</>
 
   return <>{children}</>
 }
